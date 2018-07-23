@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="calculadora.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="calculadora">
+        <table id="tabla" border="1">
+            <tr>
+                <td colspan="5">
+                    <input type="text" id="display" name="display" value="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input class="numero" name="boton" type="button" value="9" />
+                </td>
+                <td>
+                    <input class="numero" name="boton" type="button" value="8" />
+                </td>
+                <td>
+                    <input class="numero" name="boton" type="button" value="7" />
+                </td>
+                <td>
+                    <input class="oper" name="operando" type="button" value="+" />
+                </td>
+                <td>
+                    <input class="borra" name="operando" type="button" value="C" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input class="numero" name="boton" type="button" value="6" />
+                </td>
+                <td>
+                    <input class="numero" name="boton" type="button" value="5" />
+                </td>
+                <td>
+                    <input class="numero" name="boton" type="button" value="4" />
+                </td>
+                <td>
+                    <input class="oper" name="operando" type="button" value="-" />
+                </td>
+                <td>
+                    <input class="oper" name="operando" type="button" value="EXP" />
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <input class="numero" name="boton" type="button" value="3" />
+                </td>
+                <td>
+                    <input class="numero" name="boton" type="button" value="2" />
+                </td>
+                <td>
+                    <input class="numero" name="boton" type="button" value="1" />
+                </td>
+                <td>
+                    <input class="oper" name="operando" type="button" value="*" />
+                </td>
+                <td>
+                    <input class="oper" name="operando" type="button" value="RAIZ" />
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <input class="numero" name="boton" type="button" value="0" />
+                </td>
+                <td colspan="2">
+                    <input class="igual" name="operando" type="button" value="=" />
+                </td>
+                <td>
+                    <input class="oper" name="operando" type="button" value="/" />
+                </td>
+                <td>
+                    <input class="oper" name="boton" type="button" value="." />
+                </td>
+
+            </tr>
+        </table>
+    </div>
+    <script>
+        var display = document.getElementById("display");
+        var boton = document.getElementsByName("boton");
+        var operacion = document.getElementsByName("operando");
+        var operador;
+        var cifra = 0;
+        var segundo = true;
+        deisplay=0;
+
+        //asigna los eventos a los botones
+        for (var index = 0; index < boton.length; index++) {
+            let elboton = boton[index];
+            elboton.addEventListener("click", botones, true);
+        }
+
+        for (var index = 0; index < operacion.length; index++) {
+            let laoperacion = operacion[index];
+
+            laoperacion.addEventListener("click", operador, true);
+        }
+        //Dibuja las cifras y distingue si se ha elegido una operacion o una cifra y borra el cero del principio salvo que sea un punto
+        function botones() {
+            if (segundo == true) {
+                if (display.value == "0" && this.value != ".") {
+                    display.value = "";
+                }
+
+                display.value += this.value;
+            } else {
+                display.value = this.value;
+                segundo = true;
+            }
+        }
+
+        //comprueba que operador es el elegido, si es el igual llama a la funcion resultado y si es C borra la pantalla
+        function operador() {
+            if (this.value == "=") {
+
+                resultado();
+            } else {
+                if (this.value == "C") {
+                    display.value = "0";
+                    cifra = 0;
+                } else {
+
+                    cifra = display.value;
+                    operador = this.value;
+
+                    display.value += this.value;
+                    segundo = false;
+                }
+            }
+        }
+        //función que convierte a float y hace la operción
+        function resultado() {
+
+            switch (operador) {
+                case "/":
+                    display.value = parseFloat(cifra) / parseFloat(display.value);
+
+                    break;
+
+                case "+":
+                    display.value = parseFloat(cifra) + parseFloat(display.value);
+
+                    break;
+
+                case "*":
+                    display.value = parseFloat(cifra) * parseFloat(display.value);
+
+                    break;
+
+                case "-":
+                    display.value = parseFloat(cifra) - parseFloat(display.value);
+
+                    break;
+
+                case "EXP":
+                    display.value = Math.pow(parseFloat(cifra), parseFloat(display.value));
+
+                    break;
+
+
+                case "RAIZ":
+                    display.value = Math.sqrt(parseFloat(cifra));
+                    break;
+
+                default:
+                    display.value = "ERROR";
+                    break;
+            }
+        }
+    </script>
+</body>
+
+</html>
